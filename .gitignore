@@ -90,10 +90,9 @@ ENV/
 # Rope project settings
 .ropeproject
 
-.idea/*
-
 Ch02/digits
 Ch04/email
 Ch06/digits
 
 *.DS_Store
+.idea/
