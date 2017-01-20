@@ -60,7 +60,7 @@ def autoNorm(dataSet):
     normDataSet = zeros(shape(dataSet))
     m = dataSet.shape[0]
     normDataSet = dataSet - tile(minVals, (m, 1))
-    normDataSet = normDataSet / tile(ranges, (m, 1))  # element wise divide
+    normDataSet /= tile(ranges, (m, 1))  # element wise divide
     return normDataSet, ranges, minVals
 
 
@@ -74,7 +74,8 @@ def datingClassTest():
     for i in range(numTestVecs):
         classifierResult = classify0(normMat[i, :], normMat[numTestVecs:m, :], datingLabels[numTestVecs:m], 3)
         print "the classifier came back with: %d, the real answer is: %d" % (classifierResult, datingLabels[i])
-        if (classifierResult != datingLabels[i]): errorCount += 1.0
+        if classifierResult != datingLabels[i]:
+            errorCount += 1.0
     print "the total error rate is: %f" % (errorCount / float(numTestVecs))
     print errorCount
 
@@ -91,7 +92,7 @@ def img2vector(filename):
 
 def handwritingClassTest():
     hwLabels = []
-    trainingFileList = listdir('trainingDigits')  # load the training set
+    trainingFileList = listdir('digits/trainingDigits')  # load the training set
     m = len(trainingFileList)
     trainingMat = zeros((m, 1024))
     for i in range(m):
@@ -99,15 +100,15 @@ def handwritingClassTest():
         fileStr = fileNameStr.split('.')[0]  # take off .txt
         classNumStr = int(fileStr.split('_')[0])
         hwLabels.append(classNumStr)
-        trainingMat[i, :] = img2vector('trainingDigits/%s' % fileNameStr)
-    testFileList = listdir('testDigits')  # iterate through the test set
+        trainingMat[i, :] = img2vector('digits/trainingDigits/%s' % fileNameStr)
+    testFileList = listdir('digits/testDigits')  # iterate through the test set
     errorCount = 0.0
     mTest = len(testFileList)
     for i in range(mTest):
         fileNameStr = testFileList[i]
         fileStr = fileNameStr.split('.')[0]  # take off .txt
         classNumStr = int(fileStr.split('_')[0])
-        vectorUnderTest = img2vector('testDigits/%s' % fileNameStr)
+        vectorUnderTest = img2vector('digits/testDigits/%s' % fileNameStr)
         classifierResult = classify0(vectorUnderTest, trainingMat, hwLabels, 3)
         print "the classifier came back with: %d, the real answer is: %d" % (classifierResult, classNumStr)
         if (classifierResult != classNumStr): errorCount += 1.0
